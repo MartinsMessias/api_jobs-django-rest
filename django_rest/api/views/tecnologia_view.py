@@ -38,3 +38,8 @@ class TecnolgiaDetalhes(APIView):
             tecnologia_services.editar_tecnologia(tecnologia_antiga, tecnologia_nova)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id, format=None):
+        tecnologia = tecnologia_services.listar_tecnologia_id(id)
+        tecnologia_services.remover_tecnologia(tecnologia)
+        return Response(status=status.HTTP_204_NO_CONTENT)
