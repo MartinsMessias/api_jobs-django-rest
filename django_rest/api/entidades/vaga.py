@@ -58,6 +58,14 @@ class Vaga():
         self.__tipo_contratacao = tipo_contratacao
 
     @property
+    def contato(self):
+        return self.__contato
+
+    @contato.setter
+    def contato(self, contato):
+        self.__contato = contato
+
+    @property
     def tecnologias(self):
         return self.__tecnologias
 
