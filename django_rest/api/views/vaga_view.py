@@ -6,6 +6,7 @@ from ..entidades import vaga
 from ..serializers import vaga_serializer
 from ..services import vaga_service
 
+
 class VagaList(APIView):
 
     def get(self, request, format=None):
@@ -25,8 +26,17 @@ class VagaList(APIView):
             quantidade = serializer.validated_data['quantidade']
             contato = serializer.validated_data['contato']
             tecnologias = serializer.validated_data['tecnologias']
-            vaga_nova = vaga.Vaga(titulo=titulo, descricao=descricao, salario=salario, tipo_contratacao=tipo_contratacao,
+            vaga_nova = vaga.Vaga(titulo=titulo, descricao=descricao, salario=salario,
+                                  tipo_contratacao=tipo_contratacao,
                                   local=local, quantidade=quantidade, contato=contato, tecnologias=tecnologias)
             vaga_service.cadastrar_vaga(vaga_nova)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return  Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class VagaDetalhes(APIView):
+    def get(self, requisicao,  id, format=None,):
+        vaga = vaga_service.listar_vaga_id(id)
+        serializer = vaga_serializer.VagaSerializer(vaga)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
