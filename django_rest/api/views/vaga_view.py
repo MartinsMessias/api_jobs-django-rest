@@ -6,12 +6,13 @@ from rest_framework.pagination import LimitOffsetPagination
 from ..entidades import vaga
 from ..serializers import vaga_serializer
 from ..services import vaga_service
-
+from ..pagination import PaginacaoCustomizada
 
 class VagaList(APIView):
 
     def get(self, request, format=None):
-        paginacao = LimitOffsetPagination()
+        #paginacao = LimitOffsetPagination()
+        paginacao = PaginacaoCustomizada()
         vagas = vaga_service.listar_vagas()
         resultado = paginacao.paginate_queryset(vagas, request)
         serilizer = vaga_serializer.VagaSerializer(resultado, many=True)
