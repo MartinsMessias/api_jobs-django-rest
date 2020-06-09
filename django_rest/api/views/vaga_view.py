@@ -11,14 +11,14 @@ from ..pagination import PaginacaoCustomizada
 
 
 class VagaList(APIView):
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
 
     def get(self, request, format=None):
         # paginacao = LimitOffsetPagination()
         paginacao = PaginacaoCustomizada()
         vagas = vaga_service.listar_vagas()
         resultado = paginacao.paginate_queryset(vagas, request)
-        serilizer = vaga_serializer.VagaSerializer(resultado, many=True)
+        serilizer = vaga_serializer.VagaSerializer(resultado, context={'request': request}, many=True)
         # serilizer = vaga_serializer.VagaSerializer(vagas, many=True)
         return paginacao.get_paginated_response(serilizer.data)
         # return Response(serilizer.data, status=status.HTTP_200_OK)
