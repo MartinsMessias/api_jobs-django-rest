@@ -1,19 +1,22 @@
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
+
 
 from ..entidades import vaga
 from ..serializers import vaga_serializer
 from ..services import vaga_service
 from ..pagination import PaginacaoCustomizada
 
+class VagaList(GenericAPIView):
+    permission_classes = [AllowAny]
 
-class VagaList(APIView):
-    # permission_classes = [AllowAny]
-
+    serializer_class = vaga_serializer.VagaSerializer
     def get(self, request, format=None):
+        """ Listar vagas"""
         # paginacao = LimitOffsetPagination()
         paginacao = PaginacaoCustomizada()
         vagas = vaga_service.listar_vagas()
@@ -24,6 +27,7 @@ class VagaList(APIView):
         # return Response(serilizer.data, status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
+        """ Cadastrar vaga"""
         serializer = vaga_serializer.VagaSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -43,13 +47,19 @@ class VagaList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class VagaDetalhes(APIView):
+class VagaDetalhes(GenericAPIView):
+    permission_classes = [AllowAny]
+
+    serializer_class = vaga_serializer.VagaSerializer
+
     def get(self, requisicao, id, format=None, ):
+        """Detalhar vaga pelo id"""
         vaga = vaga_service.listar_vaga_id(id)
         serializer = vaga_serializer.VagaSerializer(vaga)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, id, format=None):
+        """Editar vaga pelo id"""
         vaga_antiga = vaga_service.listar_vaga_id(id)
         serializer = vaga_serializer.VagaSerializer(vaga_antiga, data=request.data)
         if serializer.is_valid():
@@ -69,6 +79,7 @@ class VagaDetalhes(APIView):
         return Response(serializer.errors, stutus=status.HTTP_400_BAD_REQUEST1)
 
     def delete(self, request, id, format=None):
+        """ Deletar vaga pelo id"""
         vaga = vaga_service.listar_vaga_id(id)
         vaga_service.remover_vaga(vaga)
         return Response(status=status.HTTP_204_NO_CONTENT)

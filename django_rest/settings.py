@@ -30,19 +30,20 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'api',
     'oauth2_provider',
-    'rest_framework_swagger'
+    'rest_framework_swagger',
+    'django.contrib.staticfiles',
+    'rest_framework'
 
 ]
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -81,8 +82,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_rest',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'pmauser',
+        'PASSWORD': 'password_here',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -135,7 +136,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
 
 OAUTH2_PROVIDER = {
