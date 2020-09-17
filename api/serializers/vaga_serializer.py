@@ -12,9 +12,13 @@ class VagaSerializer(serializers.ModelSerializer):
                   'quantidade', 'contato', 'tipo_contratacao', 'tecnologias', 'links')
 
     def get_links(self, obj):
-        request = self.context['request']
-        return {
-            'self': reverse('vaga_detalhes', kwargs={'id': obj.pk}, request=request),
-            'delete': reverse('vaga_detalhes', kwargs={'id': obj.pk}, request=request),
-            'update': reverse('vaga_detalhes', kwargs={'id': obj.pk}, request=request),
-        }
+        try:
+            request = self.context['request']
+            return {
+                'self': reverse('vaga_detalhes', kwargs={'id': obj.pk}, request=request),
+                'delete': reverse('vaga_detalhes', kwargs={'id': obj.pk}, request=request),
+                'update': reverse('vaga_detalhes', kwargs={'id': obj.pk}, request=request),
+            }
+        except:
+            pass
+
