@@ -1,20 +1,24 @@
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.pagination import LimitOffsetPagination
 
-
 from ..entidades import vaga
+from ..models import Vaga
 from ..serializers import vaga_serializer
 from ..services import vaga_service
 from ..pagination import PaginacaoCustomizada
 
-class VagaList(GenericAPIView):
-    permission_classes = [AllowAny]
 
+class VagaList(GenericAPIView):
+    # permission_classes = [AllowAny]
+    # renderer_classes = [JSONRenderer]
     serializer_class = vaga_serializer.VagaSerializer
+    queryset = Vaga.objects.all()
+
     def get(self, request, format=None):
         """ Listar vagas"""
         # paginacao = LimitOffsetPagination()
@@ -46,10 +50,14 @@ class VagaList(GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @classmethod
+    def get_extra_actions(cls):
+        return []
+
 
 class VagaDetalhes(GenericAPIView):
-    permission_classes = [AllowAny]
-
+    # permission_classes = [AllowAny]
+    queryset = Vaga.objects.all()
     serializer_class = vaga_serializer.VagaSerializer
 
     def get(self, requisicao, id, format=None, ):
@@ -83,3 +91,7 @@ class VagaDetalhes(GenericAPIView):
         vaga = vaga_service.listar_vaga_id(id)
         vaga_service.remover_vaga(vaga)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @classmethod
+    def get_extra_actions(cls):
+        return []

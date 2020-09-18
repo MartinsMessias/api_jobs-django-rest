@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+
 # Configure Django App for Heroku.
 try:
     import django_heroku
@@ -36,7 +37,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'api',
     'oauth2_provider',
-    'rest_framework_swagger',
+    # 'rest_framework_swagger',
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
@@ -66,7 +66,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 CORS_ORIGIN_ALLOW_ALL = True
-
 
 ROOT_URLCONF = 'django_rest.urls'
 
@@ -88,7 +87,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_rest.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -102,11 +100,11 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
-try:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-except:
-    pass
+#
+# try:
+#     # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# except:
+#     pass
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -125,7 +123,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -139,7 +136,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -151,10 +147,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
 }
 
 OAUTH2_PROVIDER = {
